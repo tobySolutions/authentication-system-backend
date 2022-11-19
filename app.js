@@ -1,15 +1,18 @@
+const morgan = require("morgan");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+app.use(morgan("combined"))
 
 // require database connection
 const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
 
 const auth = require("./auth");
+
 
 // body parser configuration
 app.use(bodyParser.json());
@@ -47,6 +50,7 @@ app.post("/register", (request, response) => {
   .hash(request.body.password, 10)
  .then(
     (hashedPassword) => {
+      console.log(hashedPassword)
       // create a new user instance and collect the data
       const user = new User({
         email: request.body.email,
@@ -58,6 +62,7 @@ app.post("/register", (request, response) => {
       user.save()
       // return success if the new user is added to database successfully
       .then((result)=> {
+        console.log(result)
         response.status(201).send({
           message: "User Created Successfully",
           result,
@@ -65,6 +70,7 @@ app.post("/register", (request, response) => {
       })
       // catch error if the new user wasn't added successfully to the database
       .catch((error) => {
+        console.log(error)
         response.status(500).send({
           message: "Error creating user",
           error,
