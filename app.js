@@ -15,9 +15,8 @@ const auth = require("./auth");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (request, response, next) => {
+app.get("/", (request, response) => {
   response.json({ message: "Hey! This is your server response!" });
-  next();
 });
 
 //execute database connection
